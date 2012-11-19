@@ -1,8 +1,5 @@
-var id = 7;
-
-
-var templateHtml = "<a href='#'' id='showAdd'>add</a><div id='addContainer'></div><% _.each(obj, function(i) { %>  <p><%= i.title %></p> <a href='#' class='delete' data-id='<%= i.id %>'>delete</a> <a href='#' class='edit' data-id='<%= i.id %>'>edit</a><% }); %>";
-var eventHtml = "<input type='text' id='title' value='<%= title %>'/><a href='#' class='add'>add</a>";
+var templateHtml = "<a href='#'' id='showAdd'>add</a><div id='addContainer'></div><% _.each(obj, function(i) { %>  <p><%= i.title %></p> <a href='#' class='delete' data-id='<%= i._id %>'>delete</a> <a href='#' class='edit' data-id='<%= i._id %>'>edit</a><% }); %>";
+var eventHtml = "<input type='text' id='title' value='<%= title %>'/><a href='#' class='add'>save</a>";
 
 var EventView = Backbone.View.extend({
 	tpl: _.template(eventHtml),
@@ -17,10 +14,6 @@ var EventView = Backbone.View.extend({
 	save : function() {
 		var event = this.model.toJSON();
 		event.title = this.$('#title').val();
-		if (this.model.isNew()){
-			event.id = id;
-			id++;	
-		}
 		this.model.save(event);
 		this.$('#title').val('');
 	}
@@ -48,7 +41,8 @@ var EventsView = Backbone.View.extend({
 	deleteEvent : function(e) {
 		var id = $(e.target).data('id');
 		var event = this.model.get(id);
-		this.model.remove(event);
+	//	this.model.remove(event);///why??:))
+		event.destroy();
 	},
 	editEvent : function(e) {
 		var id = $(e.target).data('id');
@@ -70,6 +64,7 @@ var EventsView = Backbone.View.extend({
 });
 var Event = Backbone.Model.extend({
 	url : '/api/events',
+	 idAttribute: "_id",
 	defaults : {
 		title : ''
 	}
