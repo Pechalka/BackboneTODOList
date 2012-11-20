@@ -15,9 +15,16 @@ function(Backbone, eventHtml) {
 			this.remove();
 		},
 		save : function() {
-			var event = this.model.toJSON();
-			event.title = this.$('#title').val();
-			this.model.save(event);
+			var hash = this.model.toJSON();
+			//{ title : this.$('#title').val() };
+			
+			hash.title = this.$('#title').val();
+
+			if (this.model.isNew())
+				this.model.save(hash);
+			else
+				this.collection.create(hash);
+			
 			this.remove();
 		}
 	});

@@ -11,7 +11,7 @@ function(Backbone, eventItemHtml) {
 			this.remove();
 		},
 		editEvent : function(e) {
-			this.model.trigger('tryEdit', this.model);
+			this.model.trigger('start_edit', this.model);
 		},
 		render : function(){
 			var html = this.tpl(this.model.toJSON());

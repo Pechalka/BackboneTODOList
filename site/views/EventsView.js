@@ -7,12 +7,14 @@ function(Backbone, EventItemView, EventView, Event,  templateHtml) {
 			'click #showAdd' : 'addEvent'
 		},
 		initialize : function() {
-			this.render();
-			this.model.on('all', this.renderItem, this);
+			this.model.on('reset', this.render, this);
+			this.model.on('change destroy', this.renderItem, this);
 		},
 		render : function() {
 			var html = this.tpl(this.model.toJSON());
 			this.$el.html(html);
+
+			this.renderItem();
 
 			$(this.parent).empty().append(this.$el);
 		
@@ -22,23 +24,19 @@ function(Backbone, EventItemView, EventView, Event,  templateHtml) {
 			console.log('render items');
 			this.$('#items').empty();
 			_.each(this.model.models, function(event){
-				event.on('tryEdit', this.prepareToSave, this);
+				event.on('start_edit', this.showPopup, this);
 
 				var view = new EventItemView({ model : event });
 				this.$('#items').append(view.render().el)
 			}, this);
 		},
-		prepareToSave : function(event) {
-			var self = this;
-			event.on('change', function(m) {
-				self.model.add(m);
-			});
-			var view = new EventView({ model : event });
+		showPopup : function(event) {
+			var view = new EventView({ model : event, collection : this.model });
 			this.$('#addContainer').empty().append(view.render().$el);
 		},
 		addEvent : function() {
 			var event = new Event();
-			this.prepareToSave(event);
+			this.showPopup(event);
 		}
 	});
 
