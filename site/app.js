@@ -1,6 +1,6 @@
-var templateHtml = "<a href='#' id='showAdd'>add</a><div id='addContainer'></div><div id='items'></div>";
-var eventHtml = "<input type='text' id='title' value='<%= title %>'/><a href='#' class='add'>save</a> <a href='#' class='cansel'>cansel</a>";
-var eventItemHtml = "<p><%= title %></p> <a href='#' class='delete'>delete</a> <a href='#' class='edit' >edit</a>";
+var templateHtml = "<div class='row'><div class='span9' ><a href='#' id='showAdd' class='btn pull-right' >add</a></div></div><div id='addContainer'></div><div id='items'></div>";
+var eventHtml = "<div class='modal'><div class='modal-header'><button type='button' class='close cansel' data-dismiss='modal' aria-hidden='true'>×</button><h3 id='myModalLabel'>Modal header</h3></div><div class='modal-body'><p><input type='text' id='title' value='<%= title %>'/></p></div><div class='modal-footer'><button class='btn cansel' data-dismiss='modal' aria-hidden='true'>Close</button><button class='btn btn-primary add'>Save changes</button></div></div><div class='modal-backdrop'></div>";
+var eventItemHtml = "<div class='row' style='margin-top : 10px'><div class='span6'><p><%= title %></p></div><div class='span3 pull-right'><div class='btn-group'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' href='#'>Action <span class='caret'></span></a><ul class='dropdown-menu'><li> <a class='edit' href='#'> <i class='icon-edit'></i> Edit </a> </li><li class='divider'></li><li> <a class='delete' href='#''> <i class='icon-trash'></i> Delete </a> </li></ul></div></div></div><div>";
 
 var EventView = Backbone.View.extend({
 	tpl: _.template(eventHtml),
@@ -40,6 +40,7 @@ var EventItemView = Backbone.View.extend({
 	render : function(){
 		var html = this.tpl(this.model.toJSON());
 		this.$el.html(html);
+
 		return this;
 	}
 });
