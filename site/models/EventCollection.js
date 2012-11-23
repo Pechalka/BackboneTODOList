@@ -5,8 +5,14 @@ define(["backbone", "./Event"], function(Backbone, Event) {
 		newEvent : function(){
 			return new Event().toJSON();
 		},
-		AddEvent : function(hash){
-			this.add(hash);
+		saveOrCreate : function(event, hash){
+			var self = this;
+			event.save(hash, {
+				success : function() {
+					self.add(event);
+					self.trigger('save');
+				}
+			});
 		}
 	});
 	return EventCollection;

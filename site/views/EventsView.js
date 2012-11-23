@@ -1,5 +1,5 @@
-define(["backbone",  "./EventItemView", "./EventView", "/models/Event.js" , "text!../tpl/events.html"], 
-function(Backbone, EventItemView, EventView, Event,  templateHtml) {
+define(["backbone",  "./EventItemView", "./PopupView", "/models/Event.js" , "text!../tpl/events.html"], 
+function(Backbone, EventItemView, PopupView, Event,  templateHtml) {
 	var EventsView = Backbone.View.extend({
 		tpl: _.template(templateHtml),
 		parent : '.container',
@@ -7,14 +7,12 @@ function(Backbone, EventItemView, EventView, Event,  templateHtml) {
 			'click #showAdd' : 'addEvent'
 		},
 		initialize : function() {
-			this.model.on('reset', this.render, this);
-			this.model.on('change destroy', this.renderItem, this);
+			this.render();
+			this.model.on('save destroy reset', this.renderItem, this);
 		},
 		render : function() {
 			var html = this.tpl(this.model.toJSON());
 			this.$el.html(html);
-
-			this.renderItem();
 
 			$(this.parent).empty().append(this.$el);
 		
@@ -31,7 +29,7 @@ function(Backbone, EventItemView, EventView, Event,  templateHtml) {
 			}, this);
 		},
 		showPopup : function(event) {
-			var view = new EventView({ model : event, collection : this.model });
+			var view = new PopupView({ model : event, collection : this.model });
 			this.$('#addContainer').empty().append(view.render().$el);
 		},
 		addEvent : function() {

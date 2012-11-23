@@ -14,16 +14,11 @@ function(Backbone, eventHtml) {
 		cansel : function(){
 			this.remove();
 		},
-		save : function() {
-			var hash = this.model.toJSON();
-			//{ title : this.$('#title').val() };
-			
-			hash.title = this.$('#title').val();
-
-			if (this.model.isNew())
-				this.model.save(hash);
-			else
-				this.collection.create(hash);
+		save : function() {			
+			this.collection.saveOrCreate(
+				this.model, 
+				{ title : this.$('#title').val()}
+			);
 			
 			this.remove();
 		}
