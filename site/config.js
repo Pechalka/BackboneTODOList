@@ -19,8 +19,12 @@ require.config({
 	}
 });
 
-require([ "../models/EventCollection", "../views/EventsView", "bootstrap"], function( EventCollection, EventsView) {
+require([ "../models/EventCollection", "../views/EventsView", "bootstrap"], 
+function( EventCollection, EventsView) {
 	var events = new EventCollection;
-	var eventsView = new EventsView({ model : events });
+
+	var view = new EventsView({ collection : events });	
+	$('.container').empty().append(view.render().el);
+
 	events.fetch();
 });	

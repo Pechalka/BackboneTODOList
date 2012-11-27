@@ -6,11 +6,11 @@ define(["backbone", "./Event"], function(Backbone, Event) {
 			return new Event().toJSON();
 		},
 		saveOrCreate : function(event, hash){
-			var self = this;
+			var collection = this;
 			event.save(hash, {
 				success : function() {
-					self.add(event);
-					self.trigger('save');
+					collection.add(event);
+					collection.trigger('save');
 				}
 			});
 		}
